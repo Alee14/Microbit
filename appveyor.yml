@@ -1,0 +1,38 @@
+image: Visual Studio 2017
+configuration: Debug
+platform: Any CPU
+before_build:
+- nuget restore
+
+build:
+    verbosity: detailed
+    project: Microbit.sln
+ 
+after_build:
+- cmd: tree /F
+- cmd: 7z a -tzip "Microbit/bin/Debug/Microbit.zip" "Microbit/bin/Debug/*"
+
+artifacts:
+- path: Microbit/bin/Debug/Microbit.zip
+  name: DevBuild
+
+deploy:
+    provider: GitHub
+    release: Continuous build
+    description: 'Microbit Development Builds'
+    auth_token:
+        secure: MeuJU9DaBpnzRdWaqvDfR4M7WhtB90FIpmYkZ5GmS8GyVSWyHT2FAMtDczW3D/JQ
+    artifact: /.*\.zip/
+    draft: false
+    prerelease: true
+    force_update: true
+    tag: continuous
+    on:
+        appveyor_repo_tag: true 
+
+on_success:
+  - ps: Invoke-RestMethod https://raw.githubusercontent.com/DiscordHooks/appveyor-discord-webhook/master/send.ps1 -o send.ps1
+  - ps: ./send.ps1 success $env:WEBHOOK_URL
+on_failure:
+  - ps: Invoke-RestMethod https://raw.githubusercontent.com/DiscordHooks/appveyor-discord-webhook/master/send.ps1 -o send.ps1
+  - ps: ./send.ps1 failure $env:WEBHOOK_URL
