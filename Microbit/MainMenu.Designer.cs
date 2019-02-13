@@ -33,6 +33,7 @@
             this.wbLauncher = new System.Windows.Forms.WebBrowser();
             this.btnReset = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
+            this.btnDebug = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lbTitle
@@ -101,6 +102,21 @@
             this.btnExit.UseVisualStyleBackColor = true;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
+            // btnDebug
+            // 
+            this.btnDebug.Enabled = false;
+            this.btnDebug.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDebug.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDebug.ForeColor = System.Drawing.Color.White;
+            this.btnDebug.Location = new System.Drawing.Point(117, 63);
+            this.btnDebug.Name = "btnDebug";
+            this.btnDebug.Size = new System.Drawing.Size(90, 32);
+            this.btnDebug.TabIndex = 5;
+            this.btnDebug.Text = "{{DEBUG}}";
+            this.btnDebug.UseVisualStyleBackColor = true;
+            this.btnDebug.Visible = false;
+            this.btnDebug.Click += new System.EventHandler(this.btnDebug_Click);
+            // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -108,6 +124,7 @@
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.ControlBox = false;
+            this.Controls.Add(this.btnDebug);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnReset);
             this.Controls.Add(this.wbLauncher);
@@ -128,6 +145,7 @@
         private System.Windows.Forms.WebBrowser wbLauncher;
         private System.Windows.Forms.Button btnReset;
         private System.Windows.Forms.Button btnExit;
+        private System.Windows.Forms.Button btnDebug;
     }
 }
 

@@ -18,6 +18,10 @@
  *
  ****************************************************************************/
 using System;
+using Microbit.Main;
+using System.IO;
+using Microbit.Kernel;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -38,12 +42,19 @@ namespace Microbit
 
         private void MainMenu_Load(object sender, EventArgs e)
         {
-
-        }
-
-        private void btnExit_Click(object sender, EventArgs e)
-        {
-            this.Close();
+#if DEBUG
+            btnDebug.Visible = true;
+            btnDebug.Enabled = true;
+#endif
+            if (Directory.Exists(MicroFS.MicrobitFolder))
+            {
+                btnReset.Enabled = true;
+            }
+            else
+            {
+                btnReset.Enabled = false;
+                MicroFS.CreateSystemFiles();
+            }
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -53,7 +64,37 @@ namespace Microbit
 
         private void btnReset_Click(object sender, EventArgs e)
         {
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            DialogResult result;
+            result = MessageBox.Show("Are you sure that you want to reset this OS?\nTHIS ACTION WILL DESTROY YOUR FILES AND RESTORE TO THE DEFAULT SETTINGS.", "Are you sure?", buttons);
+            if (result == System.Windows.Forms.DialogResult.Yes)
+            {
+                foreach (string file in Directory.GetFiles(MicroFS.MicrobitFolder))
+                {
+                    File.Delete(file);
+                }
 
+                foreach (string directory in Directory.GetDirectories(MicroFS.MicrobitFolder))
+                {
+                    Directory.Delete(directory);
+                }
+
+                Directory.Delete(MicroFS.MicrobitFolder);
+            }
+            btnReset.Enabled = false;
+            MessageBox.Show("OS has been restored to the default settings and all files are deleted.");
         }
+
+        private void btnDebug_Click(object sender, EventArgs e)
+        {
+            Debug debug = new Debug();
+            debug.Show();
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
     }
 }

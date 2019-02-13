@@ -18,6 +18,8 @@
  *
  ****************************************************************************/
 using System;
+using System.IO;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,7 +27,27 @@ using System.Threading.Tasks;
 
 namespace Microbit.Kernel
 {
-    public class Class1
+    public class MicroFS
     {
+        public static string MicrobitFolder
+        {
+            get
+            {
+                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Microbit");
+            }
+        }
+        public static string SystemFolder
+        {
+            get
+            {
+                return Path.Combine(MicrobitFolder, "System");
+
+            }
+        }
+        public static void CreateSystemFiles()
+        {
+            Directory.CreateDirectory(MicrobitFolder);
+            Directory.CreateDirectory(SystemFolder);
+        }
     }
 }
